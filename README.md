@@ -2,6 +2,12 @@
 
 Django official tutorial (Part 1-4) implementation for Software Engineering course.
 
+## Live Deployment
+🌐 **http://polls-env-v1.eba-7ar45zgu.ap-northeast-2.elasticbeanstalk.com**
+
+- Polls App: http://polls-env-v1.eba-7ar45zgu.ap-northeast-2.elasticbeanstalk.com/polls/
+- Admin Panel: http://polls-env-v1.eba-7ar45zgu.ap-northeast-2.elasticbeanstalk.com/admin/
+
 ## Features
 - Question creation and management
 - Voting system
@@ -12,6 +18,7 @@ Django official tutorial (Part 1-4) implementation for Software Engineering cour
 - Django 5.2.6
 - Python 3.13
 - SQLite
+- AWS Elastic Beanstalk
 
 ## Local Development
 ```bash
