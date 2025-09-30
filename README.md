@@ -1,29 +1,14 @@
-# Django Polls Tutorial
+# Django Polls Application
 
-Django official tutorial (Part 1-4) implementation for Software Engineering course.
-
-## Live Deployment
-🌐 **http://polls-env-v1.eba-7ar45zgu.ap-northeast-2.elasticbeanstalk.com**
-
-- Polls App: http://polls-env-v1.eba-7ar45zgu.ap-northeast-2.elasticbeanstalk.com/polls/
-- Admin Panel: http://polls-env-v1.eba-7ar45zgu.ap-northeast-2.elasticbeanstalk.com/admin/
-
-## Features
-- Question creation and management
-- Voting system
-- Results display
-- Admin interface
+A poll application built with Django for Software Engineering course.
 
 ## Technologies
 - Django 5.2.6
-- Python 3.13
+- Python 3.11
 - SQLite
-- AWS Elastic Beanstalk
 
-## Local Development
+## Setup
 ```bash
+python3 manage.py migrate
 python3 manage.py runserver
 ```
-
-Visit http://127.0.0.1:8000/polls/ to see the polls app.
-Visit http://127.0.0.1:8000/admin/ for the admin interface.
