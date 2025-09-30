@@ -7,10 +7,6 @@ A poll application built with Django for Software Engineering course.
 - Python 3.11
 - SQLite
 
-## Admin Access
-- Username: `admin`
-- Password: `admin123`
-
 ## Setup
 ```bash
 python3 manage.py migrate
