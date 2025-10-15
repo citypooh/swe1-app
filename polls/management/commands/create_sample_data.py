@@ -1,23 +1,13 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
 from polls.models import Question, Choice
 
 
 class Command(BaseCommand):
-    help = "Create sample poll data and admin user"
+    help = "Create sample poll data"
 
     def handle(self, *args, **options):
-        # Create admin user if it doesn't exist
-        if not User.objects.filter(username="admin").exists():
-            User.objects.create_superuser(
-                username="admin", email="admin@example.com", password="admin123"
-            )
-            self.stdout.write(self.style.SUCCESS("✅ Admin user created!"))
-        else:
-            self.stdout.write(self.style.WARNING("⚠️ Admin user already exists"))
-
         # Clear existing questions
         Question.objects.all().delete()
         self.stdout.write("🗑️ Cleared existing questions")
@@ -75,6 +65,3 @@ class Command(BaseCommand):
                 f"✅ Created {len(questions_data)} questions with choices!"
             )
         )
-        self.stdout.write("🌐 Admin URL: /admin/")
-        self.stdout.write("👤 Username: admin")
-        self.stdout.write("🔑 Password: admin123")
