@@ -28,7 +28,7 @@ deploy:
   region: ap-northeast-2
   app: swe1-app
   env: swe1-app-env
-  bucket: elasticbeanstalk-ap-northeast-2-459742122592
+  bucket: $AWS_S3_BUCKET
   on:
     branch: main
   access_key_id: $AWS_ACCESS_KEY_ID
