@@ -38,7 +38,7 @@ class QuestionIndexViewTests(TestCase):
     def setUp(self):
         """Clear all questions before each test."""
         Question.objects.all().delete()
-    
+
     def test_no_questions(self):
         """
         If no questions exist, an appropriate message is displayed.
