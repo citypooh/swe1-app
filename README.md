@@ -2,6 +2,8 @@
 
 A poll application built with Django for Software Engineering course.
 
+> **Test PR**: This is a test pull request to verify CI/CD pipeline functionality.
+
 [![Build Status](https://travis-ci.org/citypooh/swe1-app.svg?branch=main)](https://travis-ci.org/citypooh/swe1-app)
 [![Coverage Status](https://coveralls.io/repos/github/citypooh/swe1-app/badge.svg?branch=main)](https://coveralls.io/github/citypooh/swe1-app?branch=main)
 
