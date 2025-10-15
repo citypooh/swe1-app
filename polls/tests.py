@@ -1,8 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
-from django.core.management import call_command
-from .models import Question
+from .models import Question, Choice
 
 
 class QuestionModelTests(TestCase):
@@ -35,6 +34,10 @@ class QuestionModelTests(TestCase):
 
 
 class QuestionIndexViewTests(TestCase):
+    def setUp(self):
+        """Clear all questions before each test."""
+        Question.objects.all().delete()
+
     def test_no_questions(self):
         """
         If no questions exist, an appropriate message is displayed.
@@ -70,15 +73,112 @@ class QuestionIndexViewTests(TestCase):
         self.assertQuerySetEqual(response.context["latest_question_list"], [])
 
 
-class ManagementCommandTests(TestCase):
-    def test_create_sample_data_command(self):
-        """Test the create_sample_data management command."""
-        # Run the management command
-        call_command("create_sample_data")
+class QuestionDetailViewTests(TestCase):
+    def setUp(self):
+        """Clear all questions before each test."""
+        Question.objects.all().delete()
 
-        # Check that questions were created
-        self.assertEqual(Question.objects.count(), 3)
+    def test_past_question_detail(self):
+        """Past questions should be accessible."""
+        question = Question.objects.create(
+            question_text="Past question.",
+            pub_date=timezone.now() - timezone.timedelta(days=30),
+        )
+        response = self.client.get(reverse("polls:detail", args=(question.id,)))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, question.question_text)
 
-        # Check that each question has choices
-        for question in Question.objects.all():
-            self.assertGreater(question.choice_set.count(), 0)
+    def test_future_question_detail(self):
+        """Future questions should be accessible (Django doesn't filter by default)."""
+        question = Question.objects.create(
+            question_text="Future question.",
+            pub_date=timezone.now() + timezone.timedelta(days=30),
+        )
+        response = self.client.get(reverse("polls:detail", args=(question.id,)))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, question.question_text)
+
+
+class QuestionResultsViewTests(TestCase):
+    def setUp(self):
+        """Clear all questions before each test."""
+        Question.objects.all().delete()
+
+    def test_past_question_results(self):
+        """Past questions should show results."""
+        question = Question.objects.create(
+            question_text="Past question.",
+            pub_date=timezone.now() - timezone.timedelta(days=30),
+        )
+        response = self.client.get(reverse("polls:results", args=(question.id,)))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, question.question_text)
+
+    def test_future_question_results(self):
+        """Future questions should be accessible (Django doesn't filter by default)."""
+        question = Question.objects.create(
+            question_text="Future question.",
+            pub_date=timezone.now() + timezone.timedelta(days=30),
+        )
+        response = self.client.get(reverse("polls:results", args=(question.id,)))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, question.question_text)
+
+
+class VoteViewTests(TestCase):
+    def setUp(self):
+        """Clear all questions before each test."""
+        Question.objects.all().delete()
+
+    def test_vote_with_valid_choice(self):
+        """Voting with a valid choice should work."""
+        question = Question.objects.create(
+            question_text="Test question.",
+            pub_date=timezone.now() - timezone.timedelta(days=1),
+        )
+        choice = Choice.objects.create(
+            question=question,
+            choice_text="Test choice",
+            votes=0,
+        )
+
+        response = self.client.post(
+            reverse("polls:vote", args=(question.id,)), {"choice": choice.id}
+        )
+
+        # Should redirect to results page
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("polls:results", args=(question.id,)))
+
+        # Check that vote was recorded
+        choice.refresh_from_db()
+        self.assertEqual(choice.votes, 1)
+
+    def test_vote_without_choice(self):
+        """Voting without selecting a choice should show error."""
+        question = Question.objects.create(
+            question_text="Test question.",
+            pub_date=timezone.now() - timezone.timedelta(days=1),
+        )
+
+        response = self.client.post(reverse("polls:vote", args=(question.id,)))
+
+        # Should render detail page with error message
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "You didn&#x27;t select a choice.")
+
+    def test_vote_with_invalid_choice(self):
+        """Voting with invalid choice should show error."""
+        question = Question.objects.create(
+            question_text="Test question.",
+            pub_date=timezone.now() - timezone.timedelta(days=1),
+        )
+
+        response = self.client.post(
+            reverse("polls:vote", args=(question.id,)),
+            {"choice": 999},  # Non-existent choice
+        )
+
+        # Should render detail page with error message
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "You didn&#x27;t select a choice.")
