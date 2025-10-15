@@ -25,10 +25,10 @@ script:
 # Deploy to AWS Elastic Beanstalk on success
 deploy:
   provider: elasticbeanstalk
-  region: us-east-1
+  region: ap-northeast-2
   app: swe1-app
   env: swe1-app-env
-  bucket: $AWS_S3_BUCKET
+  bucket: elasticbeanstalk-ap-northeast-2-459742122592
   on:
     branch: main
   access_key_id: $AWS_ACCESS_KEY_ID
