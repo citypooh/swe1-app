@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
+from django.core.management import call_command
+from django.contrib.auth.models import User
 from .models import Question
 
 
@@ -67,3 +69,20 @@ class QuestionIndexViewTests(TestCase):
         response = self.client.get(reverse("polls:index"))
         self.assertContains(response, "No polls are available.")
         self.assertQuerySetEqual(response.context["latest_question_list"], [])
+
+
+class ManagementCommandTests(TestCase):
+    def test_create_sample_data_command(self):
+        """Test the create_sample_data management command."""
+        # Run the management command
+        call_command('create_sample_data')
+        
+        # Check that admin user was created
+        self.assertTrue(User.objects.filter(username='admin').exists())
+        
+        # Check that questions were created
+        self.assertEqual(Question.objects.count(), 3)
+        
+        # Check that each question has choices
+        for question in Question.objects.all():
+            self.assertGreater(question.choice_set.count(), 0)
