@@ -141,16 +141,15 @@ class VoteViewTests(TestCase):
             choice_text="Test choice",
             votes=0,
         )
-        
+
         response = self.client.post(
-            reverse("polls:vote", args=(question.id,)),
-            {"choice": choice.id}
+            reverse("polls:vote", args=(question.id,)), {"choice": choice.id}
         )
-        
+
         # Should redirect to results page
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse("polls:results", args=(question.id,)))
-        
+
         # Check that vote was recorded
         choice.refresh_from_db()
         self.assertEqual(choice.votes, 1)
@@ -161,9 +160,9 @@ class VoteViewTests(TestCase):
             question_text="Test question.",
             pub_date=timezone.now() - timezone.timedelta(days=1),
         )
-        
+
         response = self.client.post(reverse("polls:vote", args=(question.id,)))
-        
+
         # Should render detail page with error message
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "You didn&#x27;t select a choice.")
@@ -174,12 +173,12 @@ class VoteViewTests(TestCase):
             question_text="Test question.",
             pub_date=timezone.now() - timezone.timedelta(days=1),
         )
-        
+
         response = self.client.post(
             reverse("polls:vote", args=(question.id,)),
-            {"choice": 999}  # Non-existent choice
+            {"choice": 999},  # Non-existent choice
         )
-        
+
         # Should render detail page with error message
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "You didn&#x27;t select a choice.")
