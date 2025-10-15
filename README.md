@@ -51,3 +51,6 @@ This project uses Travis CI for continuous integration and deployment:
 - Linting with Flake8
 - Test coverage with Coverage.py
 - Automatic deployment to AWS Elastic Beanstalk on successful tests
+
+## Final Submission
+This PR demonstrates the complete CI/CD pipeline setup for the Software Engineering course assignment.
