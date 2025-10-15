@@ -6,6 +6,11 @@ python:
 install:
   - pip install -r requirements.txt
 
+# Environment variables for Coveralls
+env:
+  global:
+    - COVERALLS_SERVICE_NAME=travis-pro
+
 # Run tests and code quality checks
 script:
   # Run Django tests
