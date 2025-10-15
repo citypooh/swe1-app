@@ -2,10 +2,8 @@
 
 A poll application built with Django for Software Engineering course.
 
-[![Build Status](https://travis-ci.org/YOUR_USERNAME/swe1-app.svg?branch=main)](https://travis-ci.org/YOUR_USERNAME/swe1-app)
-[![Coverage Status](https://coveralls.io/repos/github/YOUR_USERNAME/swe1-app/badge.svg?branch=main)](https://coveralls.io/github/YOUR_USERNAME/swe1-app?branch=main)
-
-**Note**: Replace `YOUR_USERNAME` with your actual GitHub username in the badge URLs above.
+[![Build Status](https://travis-ci.org/citypooh/swe1-app.svg?branch=main)](https://travis-ci.org/citypooh/swe1-app)
+[![Coverage Status](https://coveralls.io/repos/github/citypooh/swe1-app/badge.svg?branch=main)](https://coveralls.io/github/citypooh/swe1-app?branch=main)
 
 ## Technologies
 - Django 5.2.6

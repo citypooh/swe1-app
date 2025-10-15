@@ -6,6 +6,11 @@ python:
 install:
   - pip install -r requirements.txt
 
+# Environment variables for Coveralls
+env:
+  global:
+    - COVERALLS_SERVICE_NAME=travis-pro
+
 # Run tests and code quality checks
 script:
   # Run Django tests
@@ -25,7 +30,7 @@ script:
 # Deploy to AWS Elastic Beanstalk on success
 deploy:
   provider: elasticbeanstalk
-  region: us-east-1
+  region: ap-northeast-2
   app: swe1-app
   env: swe1-app-env
   bucket: $AWS_S3_BUCKET

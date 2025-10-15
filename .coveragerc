@@ -17,3 +17,6 @@ exclude_lines =
     def __repr__
     raise AssertionError
     raise NotImplementedError
+
+[coveralls]
+service_name = travis-pro
